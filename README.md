@@ -10,6 +10,9 @@ composer update
 ##rebuild docker images
 docker-compose build
 
+##running artisan cli
+docker-compose exec app php artisan
+
 ##init db structure
 docker-compose exec app php artisan migrate
 
