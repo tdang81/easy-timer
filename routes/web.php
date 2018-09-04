@@ -18,3 +18,7 @@ Route::get('/', function () {
 Route::get('/imprint', function () {
     return view('imprint');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
