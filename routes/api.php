@@ -17,6 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('/projects', 'ProjectsController', [
-    'except' => ['edit', 'show', 'store']
-]);
+//Route::resource('/projects', 'ProjectsController', [
+//    'except' => ['edit', 'show', 'store']
+//]);
+
+Route::get('/projects', 'ProjectsController@index');
+Route::post('/projects', 'ProjectsController@create');
+Route::put('/projects/{id}', 'ProjectsController@update');
+Route::delete('/projects/{id}', 'ProjectsController@delete');
