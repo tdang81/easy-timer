@@ -22,5 +22,5 @@ Route::get('/imprint', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/projects', 'HomeController@index')->name('projects');
+Route::get('/projects', 'HomeController@projects')->name('projects');
 Route::get('/report', 'HomeController@index')->name('report');

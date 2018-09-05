@@ -25,4 +25,14 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    /**
+     * Show the projects management page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function projects()
+    {
+        return view('projects');
+    }
 }
