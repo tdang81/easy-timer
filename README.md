@@ -15,6 +15,7 @@ docker-compose exec app php artisan
 
 ##init db structure
 docker-compose exec app php artisan migrate
+docker-compose exec app php artisan db:seed
 
 ##build frontend ressources
 npm i
