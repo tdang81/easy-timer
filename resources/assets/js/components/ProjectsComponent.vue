@@ -2,7 +2,8 @@
     <div class="projects">
         <project-component v-for="project in projects"
                            v-bind="project"
-                           :key="project.id"></project-component>
+                           :key="project.id"
+                            @delete="del"></project-component>
         <div>
             <input type="text" name="project_name" id="project_name" v-model="project_name"/>
             <button @click="create()">Add</button>
@@ -21,7 +22,8 @@
     export default {
         data() {
             return {
-                projects: []
+                projects: [],
+                project_name: ''
             }
         },
         methods: {
@@ -42,6 +44,12 @@
                     this.projects.push(new Project(data));
                 });
             },
+            del(id) {
+                window.axios.delete(`/api/projects/${id}`).then(() => {
+                    let index = this.projects.findIndex(project => project.id === id);
+                    this.projects.splice(index, 1);
+                });
+            }
         },
         components: {
             ProjectComponent

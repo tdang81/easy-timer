@@ -9,7 +9,15 @@
 
                     <div class="card-body">
                         <div id="app">
-                            <projects></projects>
+                            <ul>
+                                <li class="nav-item">
+                                    <router-link class="nav-link" to="/trackings">Trackings</router-link>
+                                </li>
+                                <li class="nav-item">
+                                    <router-link class="nav-link" to="/projects">Projects</router-link>
+                                </li>
+                            </ul>
+                            <router-view></router-view>
                         </div>
                     </div>
                 </div>
@@ -17,3 +25,9 @@
         </div>
     </div>
 @endsection
+<script>
+    import ProjectComponent from "../assets/js/components/ProjectComponent";
+    export default {
+        components: {ProjectComponent}
+    }
+</script>

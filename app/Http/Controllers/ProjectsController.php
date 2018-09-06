@@ -22,7 +22,6 @@ class ProjectsController extends Controller
 
     /**
      * @param Request $request
-     * @param string $name
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
      */
@@ -45,18 +44,14 @@ class ProjectsController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
      */
-    public function delete(Request $request)
+    public function delete($id)
     {
-        echo 'delete';
-    }
+        Project::destroy($id);
 
-    /**
-     * @param Request $request
-     */
-    public function destroy(Request $request)
-    {
-        echo 'destroy';
+        return response(null, Response::HTTP_OK);
     }
 }
