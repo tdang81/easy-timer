@@ -50,15 +50,15 @@
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
                     @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('home') }}">{{ __('Dashboard') }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('projects') }}">{{ __('Projects') }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('report') }}">{{ __('Reporting') }}</a>
-                        </li>
+                        {{--<li class="nav-item">--}}
+                            {{--<a class="nav-link" href="{{ route('home') }}">{{ __('Dashboard') }}</a>--}}
+                        {{--</li>--}}
+                        {{--<li class="nav-item">--}}
+                            {{--<a class="nav-link" href="{{ route('projects') }}">{{ __('Projects') }}</a>--}}
+                        {{--</li>--}}
+                        {{--<li class="nav-item">--}}
+                            {{--<a class="nav-link" href="{{ route('report') }}">{{ __('Reporting') }}</a>--}}
+                        {{--</li>--}}
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

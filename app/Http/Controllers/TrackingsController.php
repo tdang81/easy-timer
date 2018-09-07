@@ -28,13 +28,13 @@ class TrackingsController extends Controller
      */
     public function create(Request $request)
     {
-        $project = new Tracking();
-        $project->name = $request->name;
-        $project->project_id = $request->project_id;
-        $project->start_datetime = Carbon::now();
-        $project->save();
+        $tracking = new Tracking();
+        $tracking->name = $request->name;
+        $tracking->project_id = $request->project_id;
+        $tracking->start_datetime = Carbon::now();
+        $tracking->save();
 
-        return response($project->jsonSerialize(), Response::HTTP_CREATED);
+        return response(Tracking::findOrFail($tracking->id)->jsonSerialize(), Response::HTTP_CREATED);
     }
 
     /**

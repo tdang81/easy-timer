@@ -47876,7 +47876,7 @@ var render = function() {
               }
             }
           },
-          [_vm._v("Add")]
+          [_vm._v("Start Working")]
         )
       ])
     ],
@@ -51199,7 +51199,7 @@ var render = function() {
     _vm._v(" "),
     _c("h3", [_vm._v(_vm._s(_vm.project))]),
     _vm._v(" "),
-    _c("h3", [_vm._v(_vm._s(_vm.startDatetime.date))]),
+    _c("h3", [_vm._v(_vm._s(_vm.startDatetime))]),
     _vm._v(" "),
     _c("h3", [_vm._v(_vm._s(_vm.duration))]),
     _vm._v(" "),

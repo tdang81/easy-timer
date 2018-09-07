@@ -7,7 +7,7 @@
                             @update="update"></tracking-component>
         <div class="add-button">
             <input type="text" name="tracking_name" id="tracking_name" v-model="tracking_name"/>
-            <button @click="create()">Add</button>
+            <button @click="create()">Start Working</button>
         </div>
     </div>
 </template>
