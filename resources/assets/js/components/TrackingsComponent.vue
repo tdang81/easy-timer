@@ -2,8 +2,10 @@
     <div class="trackings">
         <tracking-component v-for="tracking in trackings"
                             v-bind="tracking"
+                            v-bind:projects="projects"
                             :key="tracking.id"
                             @delete="del"
+                            @updateProject="updateProject"
                             @update="update"></tracking-component>
         <div class="add-button">
             <input type="text" name="tracking_name" id="tracking_name" v-model="tracking_name"/>
@@ -21,12 +23,18 @@
         this.duration = duration;
     }
 
+    function Project({id, name}) {
+        this.id = id;
+        this.name = name;
+    }
+
     import TrackingComponent from './TrackingComponent';
 
     export default {
         data() {
             return {
                 trackings: [],
+                projects: [],
                 tracking_name: ''
             }
         },
@@ -34,8 +42,13 @@
             read() {
                 window.axios.get('/api/trackings').then(({data}) => {
                     data.forEach(fetchedTracking => {
-                        console.log(fetchedTracking);
                         this.trackings.push(new Tracking(fetchedTracking));
+                    });
+                });
+
+                window.axios.get('/api/projects').then(({data}) => {
+                    data.forEach(fetchedProject => {
+                        this.projects.push(new Project(fetchedProject));
                     });
                 });
             },
@@ -52,6 +65,11 @@
             },
             update(id, name) {
                 window.axios.put(`/api/trackings/${id}`, {name}).then(() => {
+                    //TODO success message
+                });
+            },
+            updateProject(id, projectId) {
+                window.axios.put(`/api/trackings/${id}`, {project_id: projectId}).then(() => {
                     //TODO success message
                 });
             },

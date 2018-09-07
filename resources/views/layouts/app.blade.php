@@ -88,5 +88,10 @@
         @yield('content')
     </main>
 </div>
+<script>
+    const etAppUser = {
+        id: {{ Auth::user()->id }}
+    }
+</script>
 </body>
 </html>

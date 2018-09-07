@@ -40,7 +40,7 @@
                     '/api/projects',
                     {
                         name: this.project_name,
-                        user_id: 16 //@TODO replace with dynamic value
+                        user_id: etAppUser.id
                     }).then(({data}) => {
                     this.projects.push(new Project(data));
                 });

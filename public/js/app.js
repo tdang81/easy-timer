@@ -47488,7 +47488,7 @@ function Project(_ref) {
 
             window.axios.post('/api/projects', {
                 name: this.project_name,
-                user_id: 16 //@TODO replace with dynamic value
+                user_id: etAppUser.id
             }).then(function (_ref3) {
                 var data = _ref3.data;
 
@@ -47837,7 +47837,15 @@ var render = function() {
         return _c(
           "tracking-component",
           _vm._b(
-            { key: tracking.id, on: { delete: _vm.del, update: _vm.update } },
+            {
+              key: tracking.id,
+              attrs: { projects: _vm.projects },
+              on: {
+                delete: _vm.del,
+                updateProject: _vm.updateProject,
+                update: _vm.update
+              }
+            },
             "tracking-component",
             tracking,
             false
@@ -50958,6 +50966,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 function Tracking(_ref) {
     var id = _ref.id,
@@ -50973,12 +50983,21 @@ function Tracking(_ref) {
     this.duration = duration;
 }
 
+function Project(_ref2) {
+    var id = _ref2.id,
+        name = _ref2.name;
+
+    this.id = id;
+    this.name = name;
+}
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             trackings: [],
+            projects: [],
             tracking_name: ''
         };
     },
@@ -50987,12 +51006,19 @@ function Tracking(_ref) {
         read: function read() {
             var _this = this;
 
-            window.axios.get('/api/trackings').then(function (_ref2) {
-                var data = _ref2.data;
+            window.axios.get('/api/trackings').then(function (_ref3) {
+                var data = _ref3.data;
 
                 data.forEach(function (fetchedTracking) {
-                    console.log(fetchedTracking);
                     _this.trackings.push(new Tracking(fetchedTracking));
+                });
+            });
+
+            window.axios.get('/api/projects').then(function (_ref4) {
+                var data = _ref4.data;
+
+                data.forEach(function (fetchedProject) {
+                    _this.projects.push(new Project(fetchedProject));
                 });
             });
         },
@@ -51002,8 +51028,8 @@ function Tracking(_ref) {
             window.axios.post('/api/trackings', {
                 name: this.tracking_name,
                 project_id: 7 //@TODO replace with dynamic value
-            }).then(function (_ref3) {
-                var data = _ref3.data;
+            }).then(function (_ref5) {
+                var data = _ref5.data;
 
                 _this2.trackings.push(new Tracking(data));
             });
@@ -51011,6 +51037,11 @@ function Tracking(_ref) {
         },
         update: function update(id, name) {
             window.axios.put('/api/trackings/' + id, { name: name }).then(function () {
+                //TODO success message
+            });
+        },
+        updateProject: function updateProject(id, projectId) {
+            window.axios.put('/api/trackings/' + id, { project_id: projectId }).then(function () {
                 //TODO success message
             });
         },
@@ -51130,6 +51161,8 @@ exports.push([module.i, "\n.tracking {\n    margin: 20px 0 0 0;\n}\n", ""]);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ProjectsSelectionComponent__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ProjectsSelectionComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__ProjectsSelectionComponent__);
 //
 //
 //
@@ -51141,6 +51174,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -51155,16 +51191,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         update: function update() {
             this.$emit('update', this.id, this.name);
+            this.edit = false;
+        },
+        updateProject: function updateProject(value) {
+            this.$emit('updateProject', this.id, value);
         },
         updateName: function updateName(event) {
             this.name = event.target.value;
         }
     },
-    props: ['id', 'name', 'project', 'startDatetime', 'duration'],
+    props: ['id', 'name', 'project', 'startDatetime', 'duration', 'projects'],
     filters: {
         properCase: function properCase(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
+    },
+    components: {
+        ProjectsSelectionComponent: __WEBPACK_IMPORTED_MODULE_0__ProjectsSelectionComponent___default.a
     }
 });
 
@@ -51176,65 +51219,31 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "tracking" }, [
-    _c(
-      "h3",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.edit === false,
-            expression: "edit === false"
-          }
-        ],
-        on: {
-          dblclick: function($event) {
-            _vm.edit = true
-          }
-        }
-      },
-      [_vm._v(_vm._s(_vm._f("properCase")(_vm.name)))]
-    ),
-    _vm._v(" "),
-    _c("h3", [_vm._v(_vm._s(_vm.project))]),
-    _vm._v(" "),
-    _c("h3", [_vm._v(_vm._s(_vm.startDatetime))]),
-    _vm._v(" "),
-    _c("h3", [_vm._v(_vm._s(_vm.duration))]),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.edit === false,
-            expression: "edit === false"
-          }
-        ],
-        on: { click: _vm.del }
-      },
-      [_vm._v("Delete")]
-    ),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
+  return _c(
+    "div",
+    { staticClass: "tracking" },
+    [
+      _c(
+        "h3",
         {
-          name: "show",
-          rawName: "v-show",
-          value: _vm.edit === true,
-          expression: "edit === true"
-        }
-      ],
-      domProps: { value: _vm.name },
-      on: { keyup: _vm.updateName }
-    }),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.edit === false,
+              expression: "edit === false"
+            }
+          ],
+          on: {
+            dblclick: function($event) {
+              _vm.edit = true
+            }
+          }
+        },
+        [_vm._v(_vm._s(_vm._f("properCase")(_vm.name)))]
+      ),
+      _vm._v(" "),
+      _c("input", {
         directives: [
           {
             name: "show",
@@ -51243,11 +51252,55 @@ var render = function() {
             expression: "edit === true"
           }
         ],
-        on: { click: _vm.update }
-      },
-      [_vm._v("Save")]
-    )
-  ])
+        domProps: { value: _vm.name },
+        on: { keyup: _vm.updateName }
+      }),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.edit === true,
+              expression: "edit === true"
+            }
+          ],
+          on: { click: _vm.update }
+        },
+        [_vm._v("Save")]
+      ),
+      _vm._v(" "),
+      _c("h3", [_vm._v(_vm._s(_vm.project))]),
+      _vm._v(" "),
+      _c("h3", [_vm._v(_vm._s(_vm.startDatetime))]),
+      _vm._v(" "),
+      _c("h3", [_vm._v(_vm._s(_vm.duration))]),
+      _vm._v(" "),
+      _c("projects-selection-component", {
+        attrs: { currentProjectId: _vm.project, projects: _vm.projects },
+        on: { updateProject: _vm.updateProject }
+      }),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.edit === false,
+              expression: "edit === false"
+            }
+          ],
+          on: { click: _vm.del }
+        },
+        [_vm._v("Delete")]
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -51256,6 +51309,116 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-9fc79042", module.exports)
+  }
+}
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(40)
+/* script */
+var __vue_script__ = __webpack_require__(74)
+/* template */
+var __vue_template__ = __webpack_require__(75)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/ProjectsSelectionComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-699b74e2", Component.options)
+  } else {
+    hotAPI.reload("data-v-699b74e2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 74 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    methods: {
+        update: function update(event) {
+            this.$emit('updateProject', event.target.selectedOptions[0].value);
+        }
+    },
+    props: ['projects', 'currentProjectId']
+});
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "select",
+    { on: { change: _vm.update } },
+    _vm._l(_vm.projects, function(project) {
+      return _c(
+        "option",
+        {
+          key: project.id,
+          domProps: {
+            value: project.id,
+            selected: project.id === _vm.currentProjectId ? "selected" : ""
+          }
+        },
+        [_vm._v(_vm._s(project.name) + "\n    ")]
+      )
+    })
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-699b74e2", module.exports)
   }
 }
 

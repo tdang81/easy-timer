@@ -46,7 +46,12 @@ class TrackingsController extends Controller
     public function update(Request $request, $id)
     {
         $tracking       = Tracking::findOrFail($id);
-        $tracking->name = $request->name;
+        if (!empty($request->name)) {
+            $tracking->name = $request->name;
+        }
+        if (!empty($request->project_id)) {
+            $tracking->project_id = $request->project_id;
+        }
         $tracking->save();
 
         return response(null, Response::HTTP_OK);
