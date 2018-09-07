@@ -17,6 +17,9 @@ docker-compose exec app php artisan
 docker-compose exec app php artisan migrate
 docker-compose exec app php artisan db:seed
 
+##seed single seeder
+docker-compose exec app php artisan db:seed --class=TrackingsTableSeeder
+
 ##build frontend ressources
 npm i
 npm run dev

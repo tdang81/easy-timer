@@ -4,7 +4,7 @@
                            v-bind="project"
                            :key="project.id"
                             @delete="del"></project-component>
-        <div>
+        <div class="add-button">
             <input type="text" name="project_name" id="project_name" v-model="project_name"/>
             <button @click="create()">Add</button>
         </div>
@@ -43,6 +43,7 @@
                     }).then(({data}) => {
                     this.projects.push(new Project(data));
                 });
+                this.project_name = '';
             },
             del(id) {
                 window.axios.delete(`/api/projects/${id}`).then(() => {
@@ -59,3 +60,8 @@
         }
     }
 </script>
+<style>
+    .add-button {
+        margin: 20px 0 0 0;
+    }
+</style>
