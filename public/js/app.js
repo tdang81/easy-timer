@@ -47451,6 +47451,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 function Project(_ref) {
     var id = _ref.id,
@@ -47494,6 +47495,11 @@ function Project(_ref) {
                 _this2.projects.push(new Project(data));
             });
             this.project_name = '';
+        },
+        update: function update(id, name) {
+            window.axios.put('/api/projects/' + id, { name: name }).then(function () {
+                //TODO success message
+            });
         },
         del: function del(id) {
             var _this3 = this;
@@ -47577,13 +47583,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     methods: {
         del: function del() {
             this.$emit('delete', this.id);
+        },
+        update: function update() {
+            this.$emit('update', this.id, this.name);
+            console.log('update');
+        },
+        updateName: function updateName(event) {
+            this.name = event.target.value;
         }
     },
+    data: function data() {
+        return {
+            edit: false
+        };
+    },
+
     props: ['id', 'name'],
     filters: {
         properCase: function properCase(string) {
@@ -47601,9 +47622,70 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "project" }, [
-    _c("h3", [_vm._v(_vm._s(_vm._f("properCase")(_vm.name)))]),
+    _c(
+      "h3",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.edit === false,
+            expression: "edit === false"
+          }
+        ],
+        on: {
+          dblclick: function($event) {
+            _vm.edit = true
+          }
+        }
+      },
+      [_vm._v(_vm._s(_vm._f("properCase")(_vm.name)))]
+    ),
     _vm._v(" "),
-    _c("button", { on: { click: _vm.del } }, [_vm._v("Delete")])
+    _c(
+      "button",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.edit === false,
+            expression: "edit === false"
+          }
+        ],
+        on: { click: _vm.del }
+      },
+      [_vm._v("Delete")]
+    ),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "show",
+          rawName: "v-show",
+          value: _vm.edit === true,
+          expression: "edit === true"
+        }
+      ],
+      domProps: { value: _vm.name },
+      on: { keyup: _vm.updateName }
+    }),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.edit === true,
+            expression: "edit === true"
+          }
+        ],
+        on: { click: _vm.update }
+      },
+      [_vm._v("Save")]
+    )
   ])
 }
 var staticRenderFns = []
@@ -47632,7 +47714,7 @@ var render = function() {
         return _c(
           "project-component",
           _vm._b(
-            { key: project.id, on: { delete: _vm.del } },
+            { key: project.id, on: { delete: _vm.del, update: _vm.update } },
             "project-component",
             project,
             false
@@ -47755,7 +47837,7 @@ var render = function() {
         return _c(
           "tracking-component",
           _vm._b(
-            { key: tracking.id, on: { delete: _vm.del } },
+            { key: tracking.id, on: { delete: _vm.del, update: _vm.update } },
             "tracking-component",
             tracking,
             false
@@ -50875,15 +50957,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 function Tracking(_ref) {
     var id = _ref.id,
         name = _ref.name,
-        project = _ref.project;
+        project_id = _ref.project_id;
 
     this.id = id;
     this.name = name;
-    this.project = project;
+    this.project = project_id;
 }
 
 
@@ -50920,6 +51003,11 @@ function Tracking(_ref) {
                 _this2.trackings.push(new Tracking(data));
             });
             this.tracking_name = '';
+        },
+        update: function update(id, name) {
+            window.axios.put('/api/trackings/' + id, { name: name }).then(function () {
+                //TODO success message
+            });
         },
         del: function del(id) {
             var _this3 = this;
@@ -51044,11 +51132,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            edit: false
+        };
+    },
+
     methods: {
         del: function del() {
             this.$emit('delete', this.id);
+        },
+        update: function update() {
+            this.$emit('update', this.id, this.name);
+        },
+        updateName: function updateName(event) {
+            this.name = event.target.value;
         }
     },
     props: ['id', 'name', 'project'],
@@ -51068,11 +51170,72 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "tracking" }, [
-    _c("h3", [_vm._v(_vm._s(_vm._f("properCase")(_vm.name)))]),
+    _c(
+      "h3",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.edit === false,
+            expression: "edit === false"
+          }
+        ],
+        on: {
+          dblclick: function($event) {
+            _vm.edit = true
+          }
+        }
+      },
+      [_vm._v(_vm._s(_vm._f("properCase")(_vm.name)))]
+    ),
     _vm._v(" "),
     _c("h3", [_vm._v(_vm._s(_vm.project))]),
     _vm._v(" "),
-    _c("button", { on: { click: _vm.del } }, [_vm._v("Delete")])
+    _c(
+      "button",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.edit === false,
+            expression: "edit === false"
+          }
+        ],
+        on: { click: _vm.del }
+      },
+      [_vm._v("Delete")]
+    ),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "show",
+          rawName: "v-show",
+          value: _vm.edit === true,
+          expression: "edit === true"
+        }
+      ],
+      domProps: { value: _vm.name },
+      on: { keyup: _vm.updateName }
+    }),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.edit === true,
+            expression: "edit === true"
+          }
+        ],
+        on: { click: _vm.update }
+      },
+      [_vm._v("Save")]
+    )
   ])
 }
 var staticRenderFns = []

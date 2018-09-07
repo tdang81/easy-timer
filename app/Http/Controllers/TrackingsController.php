@@ -37,10 +37,17 @@ class TrackingsController extends Controller
 
     /**
      * @param Request $request
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        echo 'update';
+        $tracking       = Tracking::findOrFail($id);
+        $tracking->name = $request->name;
+        $tracking->save();
+
+        return response(null, Response::HTTP_OK);
     }
 
     /**

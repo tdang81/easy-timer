@@ -27,8 +27,8 @@ class ProjectsController extends Controller
      */
     public function create(Request $request)
     {
-        $project = new Project();
-        $project->name = $request->name;
+        $project          = new Project();
+        $project->name    = $request->name;
         $project->user_id = $request->user_id;
         $project->save();
 
@@ -37,10 +37,17 @@ class ProjectsController extends Controller
 
     /**
      * @param Request $request
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        echo 'update';
+        $project       = Project::findOrFail($id);
+        $project->name = $request->name;
+        $project->save();
+
+        return response(null, Response::HTTP_OK);
     }
 
     /**

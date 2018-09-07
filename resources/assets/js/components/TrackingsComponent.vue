@@ -1,9 +1,10 @@
 <template>
     <div class="trackings">
         <tracking-component v-for="tracking in trackings"
-                           v-bind="tracking"
-                           :key="tracking.id"
-                           @delete="del"></tracking-component>
+                            v-bind="tracking"
+                            :key="tracking.id"
+                            @delete="del"
+                            @update="update"></tracking-component>
         <div class="add-button">
             <input type="text" name="tracking_name" id="tracking_name" v-model="tracking_name"/>
             <button @click="create()">Add</button>
@@ -12,10 +13,10 @@
 </template>
 
 <script>
-    function Tracking({id, name, project}) {
+    function Tracking({id, name, project_id}) {
         this.id = id;
         this.name = name;
-        this.project = project;
+        this.project = project_id;
     }
 
     import TrackingComponent from './TrackingComponent';
@@ -45,6 +46,11 @@
                     this.trackings.push(new Tracking(data));
                 });
                 this.tracking_name = '';
+            },
+            update(id, name) {
+                window.axios.put(`/api/trackings/${id}`, {name}).then(() => {
+                    //TODO success message
+                });
             },
             del(id) {
                 window.axios.delete(`/api/trackings/${id}`).then(() => {
