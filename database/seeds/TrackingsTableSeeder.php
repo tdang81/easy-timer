@@ -3,7 +3,11 @@
 use Illuminate\Database\Seeder;
 use App\Project;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
+/**
+ * Class TrackingsTableSeeder
+ */
 class TrackingsTableSeeder extends Seeder
 {
     /**
@@ -17,7 +21,8 @@ class TrackingsTableSeeder extends Seeder
 
         DB::table('trackings')->insert([
             'name'    => 'First Timer Entry',
-            'project_id' => $firstProjectId
+            'project_id' => $firstProjectId,
+            'start_datetime' => Carbon::now()
         ]);
 
         for ($i = 0; $i < 5; $i++) {

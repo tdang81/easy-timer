@@ -13,10 +13,12 @@
 </template>
 
 <script>
-    function Tracking({id, name, project_id}) {
+    function Tracking({id, name, project_id, start_datetime, duration}) {
         this.id = id;
         this.name = name;
         this.project = project_id;
+        this.startDatetime = start_datetime;
+        this.duration = duration;
     }
 
     import TrackingComponent from './TrackingComponent';
@@ -32,6 +34,7 @@
             read() {
                 window.axios.get('/api/trackings').then(({data}) => {
                     data.forEach(fetchedTracking => {
+                        console.log(fetchedTracking);
                         this.trackings.push(new Tracking(fetchedTracking));
                     });
                 });

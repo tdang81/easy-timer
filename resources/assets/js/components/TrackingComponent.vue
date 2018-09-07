@@ -2,6 +2,8 @@
     <div class="tracking">
         <h3 v-on:dblclick="edit=true" v-show="edit === false">{{ name | properCase }}</h3>
         <h3>{{ project }}</h3>
+        <h3>{{ startDatetime.date }}</h3>
+        <h3>{{ duration }}</h3>
         <button v-show="edit === false" @click="del">Delete</button>
         <input @keyup="updateName" v-show="edit === true" v-bind:value="name" />
         <button @click="update" v-show="edit === true">Save</button>
@@ -25,7 +27,7 @@
                 this.name = event.target.value;
             }
         },
-        props: ['id', 'name', 'project'],
+        props: ['id', 'name', 'project', 'startDatetime', 'duration'],
         filters: {
             properCase(string) {
                 return string.charAt(0).toUpperCase() + string.slice(1);

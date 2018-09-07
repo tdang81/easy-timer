@@ -50962,11 +50962,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 function Tracking(_ref) {
     var id = _ref.id,
         name = _ref.name,
-        project_id = _ref.project_id;
+        project_id = _ref.project_id,
+        start_datetime = _ref.start_datetime,
+        duration = _ref.duration;
 
     this.id = id;
     this.name = name;
     this.project = project_id;
+    this.startDatetime = start_datetime;
+    this.duration = duration;
 }
 
 
@@ -50987,6 +50991,7 @@ function Tracking(_ref) {
                 var data = _ref2.data;
 
                 data.forEach(function (fetchedTracking) {
+                    console.log(fetchedTracking);
                     _this.trackings.push(new Tracking(fetchedTracking));
                 });
             });
@@ -51134,6 +51139,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -51153,7 +51160,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.name = event.target.value;
         }
     },
-    props: ['id', 'name', 'project'],
+    props: ['id', 'name', 'project', 'startDatetime', 'duration'],
     filters: {
         properCase: function properCase(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
@@ -51191,6 +51198,10 @@ var render = function() {
     ),
     _vm._v(" "),
     _c("h3", [_vm._v(_vm._s(_vm.project))]),
+    _vm._v(" "),
+    _c("h3", [_vm._v(_vm._s(_vm.startDatetime.date))]),
+    _vm._v(" "),
+    _c("h3", [_vm._v(_vm._s(_vm.duration))]),
     _vm._v(" "),
     _c(
       "button",

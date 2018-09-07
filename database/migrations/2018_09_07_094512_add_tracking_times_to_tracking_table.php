@@ -15,7 +15,7 @@ class AddTrackingTimesToTrackingTable extends Migration
     {
         Schema::table('trackings', function (Blueprint $table) {
             $table->dateTime('start_datetime');
-            $table->dateTime('end_datetime');
+            $table->dateTime('end_datetime')->nullable();
         });
     }
 

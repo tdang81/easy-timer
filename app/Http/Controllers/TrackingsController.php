@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Tracking;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -30,6 +31,7 @@ class TrackingsController extends Controller
         $project = new Tracking();
         $project->name = $request->name;
         $project->project_id = $request->project_id;
+        $project->start_datetime = Carbon::now();
         $project->save();
 
         return response($project->jsonSerialize(), Response::HTTP_CREATED);
