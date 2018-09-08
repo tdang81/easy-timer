@@ -5,8 +5,10 @@
         <button @click="update" v-show="edit === true">Save</button>
         <h3>{{ project }}</h3>
         <h3>{{ startDatetime }}</h3>
-        <h3>{{ duration }}</h3>
+        <h3>{{ endDatetime }}</h3>
+        <h3 v-show="endDatetime !== null">{{ duration.d }} days {{ duration.h }} hours {{ duration.i }} minutes</h3>
         <projects-selection-component v-bind:currentProjectId="project" @updateProject="updateProject" v-bind:projects="projects"></projects-selection-component>
+        <button v-show="endDatetime === null" @click="stop">Stop</button>
         <button v-show="edit === false" @click="del">Delete</button>
     </div>
 </template>
@@ -32,9 +34,12 @@
             },
             updateName(event) {
                 this.name = event.target.value;
-            }
+            },
+            stop () {
+                this.$emit('stop', this.id)
+            },
         },
-        props: ['id', 'name', 'project', 'startDatetime', 'duration', 'projects'],
+        props: ['id', 'name', 'project', 'startDatetime', 'endDatetime', 'duration', 'projects'],
         filters: {
             properCase(string) {
                 return string.charAt(0).toUpperCase() + string.slice(1);

@@ -52,9 +52,12 @@ class TrackingsController extends Controller
         if (!empty($request->project_id)) {
             $tracking->project_id = $request->project_id;
         }
+        if ($request->stop === true) {
+            $tracking->end_datetime = Carbon::now();
+        }
         $tracking->save();
 
-        return response(null, Response::HTTP_OK);
+        return response(Tracking::findOrFail($tracking->id)->jsonSerialize(), Response::HTTP_OK);
     }
 
     /**

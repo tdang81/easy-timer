@@ -5,6 +5,7 @@
                             v-bind:projects="projects"
                             :key="tracking.id"
                             @delete="del"
+                            @stop="stop"
                             @updateProject="updateProject"
                             @update="update"></tracking-component>
         <div class="add-button">
@@ -15,11 +16,12 @@
 </template>
 
 <script>
-    function Tracking({id, name, project_id, start_datetime, duration}) {
+    function Tracking({id, name, project_id, start_datetime, end_datetime, duration}) {
         this.id = id;
         this.name = name;
         this.project = project_id;
         this.startDatetime = start_datetime;
+        this.endDatetime = end_datetime;
         this.duration = duration;
     }
 
@@ -78,7 +80,14 @@
                     let index = this.trackings.findIndex(tracking => tracking.id === id);
                     this.trackings.splice(index, 1);
                 });
-            }
+            },
+            stop(id) {
+                window.axios.put(`/api/trackings/${id}`, {stop: true}).then((data) => {
+                    let index = this.trackings.findIndex(tracking => tracking.id === id);
+                    this.trackings[index].endDatetime = data.data.end_datetime;
+                    this.trackings[index].duration = data.data.duration;
+                });
+            },
         },
         components: {
             TrackingComponent

@@ -47842,6 +47842,7 @@ var render = function() {
               attrs: { projects: _vm.projects },
               on: {
                 delete: _vm.del,
+                stop: _vm.stop,
                 updateProject: _vm.updateProject,
                 update: _vm.update
               }
@@ -50968,18 +50969,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 function Tracking(_ref) {
     var id = _ref.id,
         name = _ref.name,
         project_id = _ref.project_id,
         start_datetime = _ref.start_datetime,
+        end_datetime = _ref.end_datetime,
         duration = _ref.duration;
 
     this.id = id;
     this.name = name;
     this.project = project_id;
     this.startDatetime = start_datetime;
+    this.endDatetime = end_datetime;
     this.duration = duration;
 }
 
@@ -51053,6 +51057,17 @@ function Project(_ref2) {
                     return tracking.id === id;
                 });
                 _this3.trackings.splice(index, 1);
+            });
+        },
+        stop: function stop(id) {
+            var _this4 = this;
+
+            window.axios.put('/api/trackings/' + id, { stop: true }).then(function (data) {
+                var index = _this4.trackings.findIndex(function (tracking) {
+                    return tracking.id === id;
+                });
+                _this4.trackings[index].endDatetime = data.data.end_datetime;
+                _this4.trackings[index].duration = data.data.duration;
             });
         }
     },
@@ -51175,6 +51190,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -51198,9 +51215,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         updateName: function updateName(event) {
             this.name = event.target.value;
+        },
+        stop: function stop() {
+            this.$emit('stop', this.id);
         }
     },
-    props: ['id', 'name', 'project', 'startDatetime', 'duration', 'projects'],
+    props: ['id', 'name', 'project', 'startDatetime', 'endDatetime', 'duration', 'projects'],
     filters: {
         properCase: function properCase(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
@@ -51276,12 +51296,52 @@ var render = function() {
       _vm._v(" "),
       _c("h3", [_vm._v(_vm._s(_vm.startDatetime))]),
       _vm._v(" "),
-      _c("h3", [_vm._v(_vm._s(_vm.duration))]),
+      _c("h3", [_vm._v(_vm._s(_vm.endDatetime))]),
+      _vm._v(" "),
+      _c(
+        "h3",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.endDatetime !== null,
+              expression: "endDatetime !== null"
+            }
+          ]
+        },
+        [
+          _vm._v(
+            _vm._s(_vm.duration.d) +
+              " days " +
+              _vm._s(_vm.duration.h) +
+              " hours " +
+              _vm._s(_vm.duration.i) +
+              " minutes"
+          )
+        ]
+      ),
       _vm._v(" "),
       _c("projects-selection-component", {
         attrs: { currentProjectId: _vm.project, projects: _vm.projects },
         on: { updateProject: _vm.updateProject }
       }),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.endDatetime === null,
+              expression: "endDatetime === null"
+            }
+          ],
+          on: { click: _vm.stop }
+        },
+        [_vm._v("Stop")]
+      ),
       _vm._v(" "),
       _c(
         "button",
